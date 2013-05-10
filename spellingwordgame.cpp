@@ -106,10 +106,10 @@ int main() {
 		}
 		cout << "Would you like to play again? (type y to play again and n to quit):";
 		cin >> playerContinue;
-		//while ((playerContinue != 'n') || (playerContinue != 'y')) {
-		//	cout << "Please type in either a y or an n:";
-		//	cin >> playerContinue;
-		//}
+		while ((playerContinue != 'n') && (playerContinue != 'y')) {
+			cout << "Please type in either a y or an n:";
+			cin >> playerContinue;
+		}
 	}
 	return 0;
 }
