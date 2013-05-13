@@ -43,14 +43,6 @@ int main() {
 
 	srand(static_cast<unsigned int>(time(0))); //seed random number generator
 
-	//deals with previous high score (if any).
-	ifstream readScore("score_file.txt"); //if file doesn't exist, function does nothing
-	if (readScore.is_open()) {
-		//if readScore was opened, read score and display it.
-		readScore >> record;
-		cout << "Your previous high score is " << record << " points.\n";
-	}	
-
 	//this for loop fills in the wordList array with the spelling words.
 	cout << "Please type in your spelling words, pressing Enter after each one:\n";
 	for (n = 0; n < LENGTH; n++) {
@@ -64,6 +56,16 @@ int main() {
 
 	//This while loop repeats until the player wants to quit the whole game
 	while (playerContinue == 'y') {
+
+		//deals with previous high score (if any).
+		ifstream readScore("score_file.txt"); //if file doesn't exist, function does nothing
+		if (readScore.is_open()) {
+			//if readScore was opened, read score and display it.
+			readScore >> record;
+			cout << "Your previous high score is " << record << " points.\n";
+			readScore.close();
+		}	
+
 		score = 500; //sets score to 500, to subtract from there
 		bool victory = false; //sets victory status for a round
 
@@ -110,7 +112,7 @@ int main() {
 			//gives advice to player depending on where their incorrect guess was
 			else {
 				score -= 50; //subtracts fifty points for getting it wrong
-				cout << "Not quite!";
+				cout << "Not quite! ";
 				if (targetWord.compare(guessWord) > 0) {
 					cout << "I'll give you a hint: you're looking for a word further down on the list." << endl;
 				}
@@ -125,6 +127,7 @@ int main() {
 			cout << "Congratulations, you've made a new record!\n";
 			ofstream writeScore("score_file.txt", ios::trunc); //overwrites info in file, creating file if necessary
 			writeScore << score;
+			writeScore.close();
 		}
 
 		cout << "You scored " << score << " points.\n";
