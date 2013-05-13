@@ -14,6 +14,7 @@
  *
  */
 
+#include <fstream>
 #include <iostream>
 #include <string>
 #include <algorithm>
@@ -23,12 +24,15 @@
 using namespace std;
 
 int main() {
-  //This section declares variables
+	//This section declares variables
+
 	const int LENGTH = 10; //length of word list
 	string wordList [LENGTH]; //This will contain the list of words as typed in by the user, later.
 
 	int n; //for keeping place in for loop
 	int i; //for keeping place in lower-casing loop
+	int record = 0; //for keeping track of the record
+	int score = 0; //for keeping score
 	string temp; //for storing words in lower-casing loop
 
 
@@ -38,6 +42,14 @@ int main() {
 	char playerContinue = 'y'; //variable determining whether player wants to play again.
 
 	srand(static_cast<unsigned int>(time(0))); //seed random number generator
+
+	//deals with previous high score (if any).
+	ifstream readScore("score_file.txt"); //if file doesn't exist, function does nothing
+	if (readScore.is_open()) {
+		//if readScore was opened, read score and display it.
+		readScore >> record;
+		cout << "Your previous high score is " << record << ".\n";
+	}	
 
 	//this for loop fills in the wordList array with the spelling words.
 	cout << "Please type in your spelling words, pressing Enter after each one:\n";
@@ -52,6 +64,7 @@ int main() {
 
 	//This while loop repeats until the player wants to quit the whole game
 	while (playerContinue == 'y') {
+		score = 500; //sets score to 500, to subtract from there
 		bool victory = false; //sets victory status for a round
 
 		cout << "Your spelling list is the following words:\n";
@@ -95,6 +108,7 @@ int main() {
 			}
 
 			else {
+				score -= 50; //subtracts fifty points for getting it wrong
 				cout << "Not quite!";
 				if (targetWord.compare(guessWord) > 0) {
 					cout << "I'll give you a hint: you're looking for a word further down on the list." << endl;
@@ -104,6 +118,15 @@ int main() {
 				}
 			}
 		}
+		
+		//if score is higher than prev record, replace record with score and congratulate player
+		if (score > record) {
+			cout << "Congratulations, you've made a new record!\n";
+			ofstream writeScore("score_file.txt", ios::trunc);
+			writeScore << score;
+		}
+
+		cout << "You scored " << score << " points.\n";
 		cout << "Would you like to play again? (type y to play again and n to quit):";
 		cin >> playerContinue;
 		while ((playerContinue != 'n') && (playerContinue != 'y')) {
