@@ -48,7 +48,7 @@ int main() {
 	if (readScore.is_open()) {
 		//if readScore was opened, read score and display it.
 		readScore >> record;
-		cout << "Your previous high score is " << record << ".\n";
+		cout << "Your previous high score is " << record << " points.\n";
 	}	
 
 	//this for loop fills in the wordList array with the spelling words.
@@ -107,6 +107,7 @@ int main() {
 				cout << "Good job! You guessed " << targetWord << " and that was the word I was thinking of!" << endl;
 			}
 
+			//gives advice to player depending on where their incorrect guess was
 			else {
 				score -= 50; //subtracts fifty points for getting it wrong
 				cout << "Not quite!";
@@ -121,9 +122,8 @@ int main() {
 		
 		//if score is higher than prev record, replace record with score and congratulate player
 		if (score > record) {
-			//note that if score_file doesn't exist, this will create it
 			cout << "Congratulations, you've made a new record!\n";
-			ofstream writeScore("score_file.txt", ios::trunc);
+			ofstream writeScore("score_file.txt", ios::trunc); //overwrites info in file, creating file if necessary
 			writeScore << score;
 		}
 
