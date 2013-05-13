@@ -121,6 +121,7 @@ int main() {
 		
 		//if score is higher than prev record, replace record with score and congratulate player
 		if (score > record) {
+			//note that if score_file doesn't exist, this will create it
 			cout << "Congratulations, you've made a new record!\n";
 			ofstream writeScore("score_file.txt", ios::trunc);
 			writeScore << score;
